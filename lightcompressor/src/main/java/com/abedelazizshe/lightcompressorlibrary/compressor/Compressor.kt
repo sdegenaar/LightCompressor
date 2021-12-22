@@ -84,7 +84,8 @@ object Compressor {
             extractor.setDataSource(context, srcUri, null)
         } else {
             try {
-                mediaMetadataRetriever.setDataSource(srcPath)
+//                 mediaMetadataRetriever.setDataSource(srcPath)
+                setDataSource(srcPath, mediaMetadataRetriever);
             } catch (exception: IllegalArgumentException) {
                 printException(exception)
                 return Result(
@@ -549,5 +550,11 @@ object Compressor {
 
         inputSurface.release()
         outputSurface.release()
+    }
+    
+     private static void setDataSource(String video, MediaMetadataRetriever retriever) throws IOException {
+        File videoFile = new File(video);
+        FileInputStream inputStream = new FileInputStream(videoFile.getAbsolutePath());
+        retriever.setDataSource(inputStream.getFD());
     }
 }
