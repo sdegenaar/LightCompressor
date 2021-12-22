@@ -20,6 +20,7 @@ import com.abedelazizshe.lightcompressorlibrary.utils.CompressorUtils.validateIn
 import com.abedelazizshe.lightcompressorlibrary.utils.StreamableVideo
 import com.abedelazizshe.lightcompressorlibrary.video.*
 import java.io.File
+import java.io.FileInputStream
 import java.nio.ByteBuffer
 
 /**
@@ -85,7 +86,9 @@ object Compressor {
         } else {
             try {
 //                 mediaMetadataRetriever.setDataSource(srcPath)
-                setDataSource(srcPath, mediaMetadataRetriever);
+                if (srcPath != null) {
+                    setDataSource(srcPath, mediaMetadataRetriever)
+                };
             } catch (exception: IllegalArgumentException) {
                 printException(exception)
                 return Result(
@@ -552,9 +555,11 @@ object Compressor {
         outputSurface.release()
     }
     
-     private static void setDataSource(String video, MediaMetadataRetriever retriever) throws IOException {
-        File videoFile = new File(video);
-        FileInputStream inputStream = new FileInputStream(videoFile.getAbsolutePath());
+     private fun setDataSource(video:String, retriever:MediaMetadataRetriever){
+        Log.e("Test", "We calling this")
+        val videoFile = File(video);
+        val inputStream = FileInputStream(videoFile.getAbsolutePath());
         retriever.setDataSource(inputStream.getFD());
+        inputStream.close();
     }
 }
